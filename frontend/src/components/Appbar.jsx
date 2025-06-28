@@ -14,7 +14,12 @@ export const Appbar = ({ name = "User" }) => {
 
   return (
     <div className="shadow h-14 flex justify-between items-center px-4">
-      <div className="font-bold text-xl">SendMate</div>
+      <span
+        className="font-bold text-xl cursor-pointer"
+        onClick={() => navigate("/dashboard")}
+      >
+        SendMate
+      </span>
       <div className="flex items-center gap-3">
         <span>Hello, {name}</span>
         <div className="rounded-full h-10 w-10 bg-slate-300 flex items-center justify-center text-lg">
