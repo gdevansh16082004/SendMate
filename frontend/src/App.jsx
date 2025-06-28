@@ -11,7 +11,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Routes with redirect if already authenticated */}
+        
         <Route path="/" element={
           <PublicRoute>
             <Signup />
@@ -28,7 +28,7 @@ function App() {
           </PublicRoute>
         } />
 
-        {/* Protected Routes */}
+        
         <Route path="/dashboard" element={
           <PrivateRoute>
             <Dashboard />

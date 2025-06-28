@@ -11,12 +11,11 @@ export const Users = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    // Decode token to extract userId
     const base64Url = token.split('.')[1];
     const decodedData = JSON.parse(atob(base64Url));
     setCurrentUserId(decodedData.userId);
 
-    axios.get('http://localhost:3000/api/v1/user/bulk?filter=' + filter, {
+    axios.get('https://sendmate-backend.onrender.com/api/v1/user/bulk?filter=' + filter, {
       headers: {
         Authorization: "Bearer " + token
       }

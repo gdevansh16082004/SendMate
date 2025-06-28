@@ -14,7 +14,7 @@ export const Transactions = () => {
   const fetchUser = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:3000/api/v1/user/me", {
+      const response = await axios.get("https://sendmate-backend.onrender.com/api/v1/user/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -30,7 +30,7 @@ export const Transactions = () => {
   const fetchHistory = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:3000/api/v1/transactions/history", {
+      const response = await axios.get("https://sendmate-backend.onrender.com/api/v1/transactions/history", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

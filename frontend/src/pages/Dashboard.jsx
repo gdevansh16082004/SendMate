@@ -13,7 +13,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.get("http://localhost:3000/api/v1/user/me", {
+    axios.get("https://sendmate-backend.onrender.com/api/v1/user/me", {
       headers: { Authorization: "Bearer " + token }
     }).then(response => {
       setUserInfo(response.data.user);

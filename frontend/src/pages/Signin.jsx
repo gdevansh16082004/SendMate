@@ -19,14 +19,13 @@ export const Signin = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      axios.get('http://localhost:3000/api/v1/check-auth', {
+      axios.get('https://sendmate-backend.onrender.com/api/v1/check-auth', {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
         navigate('/dashboard');
       })
       .catch(() => {
-        // Invalid or expired token
         localStorage.removeItem('token');
       });
     }
@@ -34,7 +33,7 @@ export const Signin = () => {
 
   const handleSignin = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/api/v1/user/signin", {
+      const response = await axios.post("https://sendmate-backend.onrender.com/api/v1/user/signin", {
         username: email,
         password: password
       });

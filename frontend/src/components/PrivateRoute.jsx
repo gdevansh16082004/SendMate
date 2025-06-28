@@ -8,7 +8,7 @@ const PrivateRoute = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
-      .get("http://localhost:3000/api/v1/user/check-auth", {
+      .get("https://sendmate-backend.onrender.com/api/v1/user/check-auth", {
         headers: { Authorization: "Bearer " + token },
       })
       .then(() => setIsAuth(true))

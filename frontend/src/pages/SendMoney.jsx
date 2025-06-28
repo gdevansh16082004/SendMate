@@ -1,4 +1,3 @@
-// src/pages/SendMoney.jsx
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -39,7 +38,7 @@ export const SendMoney = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:3000/api/v1/account/transfer",
+        "https://sendmate-backend.onrender.com/api/v1/account/transfer",
         payload,
         {
           headers: {
