@@ -5,9 +5,10 @@ const { authMiddleWare } = require('../middleware');
 
 const express = require('express')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 const router = express.Router();
 
-router.post('/signup', async function (req, res, next) {
+router.post('/signup', async function (req, res) {
     const signupData = req.body;
     const parsedsignupData = signup.safeParse(signupData)
 
@@ -24,15 +25,19 @@ router.post('/signup', async function (req, res, next) {
             message: "Email already taken / Incorrect inputs"
         })
     }
+
+    // Hash password before storing
+    const hashedPassword = await bcrypt.hash(signupData.password, 10);
+
     const user = await User.create({
         username: signupData.username,
-        password: signupData.password,
+        password: hashedPassword,
         firstName: signupData.firstName,
         lastName: signupData.lastName
     })
-    
+
     const userId = user._id;
-    const account = await Accounts.create({
+    await Accounts.create({
         userId,
         balance : 1 + Math.random() * 10000
     })
@@ -50,7 +55,7 @@ router.post('/signup', async function (req, res, next) {
 })
 
 
-router.post('/signin', async function (req, res, next) {
+router.post('/signin', async function (req, res) {
     const signinData = req.body;
     const parsedsigninData = signin.safeParse(signinData);
 
@@ -61,28 +66,36 @@ router.post('/signin', async function (req, res, next) {
     }
 
     const user = await User.findOne({
-        username: signinData.username,
-        password: signinData.password
+        username: signinData.username
     })
 
-    if (user) {
-        const userId = user._id
-        const token = jwt.sign({
-            userId
-        }, JWT_SECRET,{ expiresIn: '3h' })
-
-        return res.json({
-            token: token
+    if (!user) {
+        return res.status(411).json({
+            message: "Error while logging in"
         })
     }
 
-    res.status(411).json({
-        message: "Error while logging in"
+    // Compare hashed password
+    const isPasswordValid = await bcrypt.compare(signinData.password, user.password);
+
+    if (!isPasswordValid) {
+        return res.status(411).json({
+            message: "Error while logging in"
+        })
+    }
+
+    const userId = user._id
+    const token = jwt.sign({
+        userId
+    }, JWT_SECRET,{ expiresIn: '3h' })
+
+    res.json({
+        token: token
     })
 
 })
 
-router.put('/', authMiddleWare, async function (req, res, next) {
+router.put('/', authMiddleWare, async function (req, res) {
     const updatedInformation = req.body;
     const parsedupdatedInformation = updateInformation.safeParse(updatedInformation)
 
@@ -90,6 +103,11 @@ router.put('/', authMiddleWare, async function (req, res, next) {
         return res.status(411).json({
             message: "Error while updating information"
         })
+    }
+
+    // Hash password if it's being updated
+    if (updatedInformation.password) {
+        updatedInformation.password = await bcrypt.hash(updatedInformation.password, 10);
     }
 
     await User.updateOne({ _id: req.userId }, updatedInformation)

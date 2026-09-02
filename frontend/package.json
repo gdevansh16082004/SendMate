@@ -1,7 +1,9 @@
 {
-  "name": "frontend",
+  "name": "sendmate-frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Frontend for SendMate - A modern React-based UI for peer-to-peer money transfers",
+  "author": "gdevansh16082004",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -7,11 +7,17 @@ const { Transaction } = require('../db');
 const { default: mongoose } = require('mongoose');
 const router = express.Router();
 
-router.get('/balance', authMiddleWare,async function(req,res,next){
-     const account = Accounts.findOne({
+router.get('/balance', authMiddleWare, async function(req, res){
+     const account = await Accounts.findOne({
         userId : req.userId
      })
-     
+
+     if (!account) {
+        return res.status(404).json({
+            message: "Account not found"
+        })
+     }
+
      res.json({
         balance : account.balance
      })
